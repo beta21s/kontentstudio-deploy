@@ -1,0 +1,7 @@
+- pipeline.id: websites.config
+  path.config: "/usr/share/logstash/pipeline/websites.config"
+  pipeline.workers: 1
+
+- pipeline.id: urls.config
+  path.config: "/usr/share/logstash/pipeline/urls.config"
+  pipeline.workers: 1

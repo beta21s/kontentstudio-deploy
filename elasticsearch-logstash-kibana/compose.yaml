@@ -1,0 +1,75 @@
+services:
+  elasticsearch:
+    env_file: .env
+    container_name: elasticsearch
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - type: bind
+        source: ./elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch/data
+        target: /usr/share/elasticsearch/data
+    networks:
+      - elastic
+
+  kibana:
+    env_file: .env
+    environment:
+      - ELASTICSEARCH_HOSTS=http://${ELASTIC_USER}:${ELASTIC_PASSWORD}@elasticsearch:9200
+    image: kibana:7.8.1
+    container_name: kibana
+    build:
+      context: kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - 5601:5601
+    volumes:
+      - type: bind
+        source: ./kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    build:
+      context: logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    container_name: logstash
+    environment:
+      discovery.seed_hosts: logstash
+      LS_JAVA_OPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - type: bind
+        source: ./logstash/config/pipeline.yml
+        target: /usr/share/kibana/config/pipeline.yml
+        read_only: true
+      - type: bind
+        source: ./logstash/pipeline/
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "5044:5044"
+      - "9600:9600"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic
+
+networks:
+  elastic:
+    driver: bridge
