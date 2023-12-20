@@ -2,6 +2,7 @@ version: '3.7'
 services:
   mongodb:
     image: mongo:latest
+    container_name: mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: YWiImBR2V5VbTF4z
@@ -9,12 +10,9 @@ services:
       - 27017:27017
     restart: unless-stopped 
     volumes:
-      - mongodbd:./data
+      - mongodb:/opt/volumes/mongodb
     networks:
       - mongodb
-
-volumes:
-  mongodb:
 
 networks:
   mongodb:
