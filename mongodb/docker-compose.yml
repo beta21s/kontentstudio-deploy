@@ -10,7 +10,7 @@ services:
       - 27017:27017
     restart: unless-stopped 
     volumes:
-      - mongodb:/opt/volumes/mongodb
+      - mongodb:/data/db
     networks:
       - mongodb
 
