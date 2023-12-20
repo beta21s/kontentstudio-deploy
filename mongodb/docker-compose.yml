@@ -14,6 +14,9 @@ services:
     networks:
       - mongodb
 
+volumes:
+  mongodb:
+
 networks:
   mongodb:
     driver: bridge
