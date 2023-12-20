@@ -1,1 +1,1 @@
-# stacks-kontent
+# Kontent Studio Deploy
