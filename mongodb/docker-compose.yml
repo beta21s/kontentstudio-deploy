@@ -4,17 +4,17 @@ services:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_ROOT_PASSWORD: YWiImBR2V5VbTF4z
     ports:
       - 27017:27017
-    restart: always 
+    restart: unless-stopped 
     volumes:
-      - mongodb_data:./data
+      - mongodbd:./data
     networks:
       - mongodb
 
 volumes:
-  mongodb_data:
+  mongodb:
 
 networks:
   mongodb:
