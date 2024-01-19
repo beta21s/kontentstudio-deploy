@@ -4,6 +4,7 @@ services:
     image: mongo:latest
     container_name: mongodb
     environment:
+      TZ: "Asia/Ho_Chi_Minh"
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: YWiImBR2V5VbTF4z
     ports:
